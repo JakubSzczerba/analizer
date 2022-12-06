@@ -2,21 +2,62 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sale")
+ */
 class Sale
 {
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="date")
+     */
     private $date_add;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $id_order_detail;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $id_order;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $product_id;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $product_quantity;
 
+    /**
+     * @ORM\Column(type="float")
+     */
     private $price;
 
+    /**
+     * @ORM\Column(type="string")
+     */
     private $status;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function getDateAdd()
     {
