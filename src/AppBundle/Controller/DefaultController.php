@@ -2,30 +2,28 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Repository\SaleRepository;
+use AppBundle\Entity\Sale;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Form\SaleType;
 use AppBundle\Services\DataProvider;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DefaultController extends Controller
 {
     private DataProvider $dataPovider;
 
-    public function __construct(DataProvider $dataPovider)
+    private EntityManagerInterface $em;
+
+    private SaleRepository $saleRepository;
+
+    public function __construct(DataProvider $dataPovider, EntityManagerInterface $em, SaleRepository $saleRepository)
     {
         $this->dataPovider = $dataPovider;
-    }
-
-    /**
-     * @Route("/", name="homepage")
-     */
-    public function indexAction(Request $request)
-    {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        $this->em = $em;
+        $this->saleRepository = $saleRepository;
     }
 
     /**
@@ -43,8 +41,22 @@ class DefaultController extends Controller
             $file = $form->get('file')->getData();
 
             $result = $this->dataPovider->serializeData($file);
+            foreach($result as $data) {
+                $row = new Sale();
+                $date = new \DateTime( $data['date_add']);
+                $row->setDateAdd($date);
+                $row->setIdOrderDetail((int) $data['id_order_detail']);
+                $row->setIdOrder((int) $data['id_order']);
+                $row->setProductId((int) $data['product_id']);
+                $row->setProductQuantity((int) $data['product_quantity']);
+                $row->setPrice((float) $data['price']);
+                $row->setStatus($data['status']);
 
-            //return $this->redirectToRoute('analize');
+                $this->em->persist($row);
+                $this->em->flush();
+            }
+
+            return $this->redirectToRoute('analize');
         }
 
         return $this->render('form/uploadFile.html.twig', [
@@ -53,10 +65,14 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/analize", name="analize")
+     * @Route("/", name="analize")
      */
     public function showAnalize(Request $request)
     {
-        return $this->render('default/index.html.twig', []);
+        $data = $this->saleRepository->getData();
+
+        return $this->render('default/analize.html.twig', [
+            'data' => $data,
+        ]);
     }
 }
