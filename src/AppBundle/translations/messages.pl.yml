@@ -1,0 +1,14 @@
+form:
+  label:
+    dateAdd:
+      year: 'year'
+      month: 'month'
+      day: 'day'
+      hour: 'hour'
+      label: 'Wybierz datę: '
+    status:
+      sent: 'Wysłane'
+      cancelled: 'Anulowane'
+      label: 'Status zamówienia: '
+    file:
+      label: 'Dane do importu: '

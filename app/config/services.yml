@@ -33,3 +33,7 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    AppBundle\Repository\:
+        resource: '../../src/AppBundle/Repository'
+        public: true
+        autowire: true

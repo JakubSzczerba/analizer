@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   {% if data is not empty %}
+      <table class="table table-striped">
+      <thead>
+      <tr>
+         <th>Product id</th>
+         <th>Price</th>
+         <th>Status</th>
+      </tr>
+      </thead>
+      <tbody>
+         {% for sale in data %}
+               <tr>
+                  <td>{{ sale.product_id }}</td>
+                  <td>{{ sale.price }}</td>
+                  <td>{{ sale.status }}</td>
+               </tr>
+         {% endfor %}
+      </tbody>
+      </table>
+   {% else %}
+      <form action="{{ path('form') }}" method="POST" class="form-horizontal">
+         <h1 class="mt-5">No data </h1>
+         <button type="submit" class="btn btn-success">load file</button>
+      </form>
+   {%endif%}
+{% endblock %}
