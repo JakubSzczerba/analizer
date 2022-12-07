@@ -43,15 +43,6 @@ class DefaultController extends Controller
             $file = $form->get('file')->getData();
 
             $result = $this->dataPovider->serializeData($file);
-            $price = [];
-            foreach ($result as $key => $row)
-            {
-                $price[$row['product_id']] = $row['price'];
-            }
-            //array_multisort($price, SORT_DESC, $result);
-            //$res = array_slice($price, 0, 10);
-
-            //price -> array with id and price -> need add sorting via dates etc
 
             //return $this->redirectToRoute('analize');
         }

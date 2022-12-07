@@ -23,8 +23,16 @@ class DataProvider
                 array_push($rows, $row);
             }
         }
+        $price = [];
+        foreach ($rows as $key => $row)
+        {
+            //$price[$key] = $row['price'];
+            $price[$row['product_id']] = (float) $row['price'];
+        }
+        arsort($price);
 
-        return $rows;
+        return $price;
+        //return array_slice($price, 0, 10);
     }
 
 }
